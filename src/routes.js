@@ -14,24 +14,25 @@ import NotFound from './pages/Page404';
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const user = true;
   return useRoutes([
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <DashboardApp /> },
-        { path: 'user', element: <User /> },
-        { path: 'products', element: <Products /> },
-        { path: 'blog', element: <Blog /> }
+        { path: 'app', element: user ? <DashboardApp /> : <Navigate to="/login" /> },
+        { path: 'user', element: user ? <User /> : <Navigate to="/login" /> },
+        { path: 'products', element: user ? <Products /> : <Navigate to="/login" /> },
+        { path: 'blog', element: user ? <Blog /> : <Navigate to="/login" /> }
       ]
     },
     {
       path: '/',
       element: <LogoOnlyLayout />,
       children: [
-        { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> },
+        { path: 'login', element: user ? <Navigate to="/dashboard" /> : <Login /> },
+        { path: 'register', element: user ? <Navigate to="/dashboard" /> : <Register /> },
         { path: '404', element: <NotFound /> },
         { path: '/', element: <Navigate to="/dashboard" /> },
         { path: '*', element: <Navigate to="/404" /> }
